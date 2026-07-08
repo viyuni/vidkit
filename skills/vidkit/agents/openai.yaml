@@ -1,0 +1,4 @@
+interface:
+  display_name: 'Vidkit'
+  short_description: 'Install and use the Vidkit video CLI.'
+  default_prompt: 'Use $vidkit to add Vidkit CLI audio or frame-sheet workflows to this project.'
