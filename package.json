@@ -2,15 +2,15 @@
   "name": "@viyuni/vidkit",
   "version": "0.0.0",
   "description": "AI video toolkit CLI for TTS and frame analysis.",
-  "homepage": "https://github.com/author/library#readme",
+  "homepage": "https://github.com/viyuni/vidkit#readme",
   "bugs": {
-    "url": "https://github.com/author/library/issues"
+    "url": "https://github.com/viyuni/vidkit/issues"
   },
   "license": "MIT",
-  "author": "Author Name <author.name@mail.com>",
+  "author": "BaiYanchen <bycrxemail@gmail.com>",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/author/library.git"
+    "url": "git+https://github.com/viyuni/vidkit.git"
   },
   "bin": {
     "vidkit": "./dist/cli.js"
@@ -43,12 +43,12 @@
     "cleye": "^2.6.0"
   },
   "devDependencies": {
-    "@types/node": "^25.6.2",
+    "@types/node": "^25.9.5",
     "@typescript/native-preview": "7.0.0-dev.20260509.2",
     "bumpp": "^11.1.0",
     "typescript": "^6.0.3",
     "vite-plus": "catalog:",
-    "vitest": "catalog:"
+    "vitest": "npm:@voidzero-dev/vite-plus-test@^0.1.24"
   },
   "packageManager": "pnpm@10.33.0"
 }

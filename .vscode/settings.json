@@ -19,5 +19,15 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.oxc": "explicit"
   },
-  "cSpell.words": ["AITTS", "arkenv", "arktype", "cleye", "qingse", "vidkit", "vitest"]
+  "cSpell.words": [
+    "AITTS",
+    "arkenv",
+    "arktype",
+    "cleye",
+    "qingse",
+    "vidkit",
+    "vitest",
+    "viyuni",
+    "Yanchen"
+  ]
 }
