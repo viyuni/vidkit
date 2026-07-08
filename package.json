@@ -13,7 +13,7 @@
     "url": "git+https://github.com/viyuni/vidkit.git"
   },
   "bin": {
-    "vidkit": "./dist/cli.mjs"
+    "vidkit": "dist/cli.mjs"
   },
   "files": [
     "dist"
