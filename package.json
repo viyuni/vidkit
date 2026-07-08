@@ -1,6 +1,6 @@
 {
   "name": "@viyuni/vidkit",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "AI video toolkit CLI for TTS and frame analysis.",
   "homepage": "https://github.com/viyuni/vidkit#readme",
   "bugs": {
@@ -13,7 +13,7 @@
     "url": "git+https://github.com/viyuni/vidkit.git"
   },
   "bin": {
-    "vidkit": "./dist/cli.js"
+    "vidkit": "./dist/cli.mjs"
   },
   "files": [
     "dist"
