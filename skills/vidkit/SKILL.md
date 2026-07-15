@@ -5,36 +5,6 @@ description: Install and use the Vidkit AI video helper CLI in another project. 
 
 # Vidkit
 
-## Installing This Skill
-
-- Install this skill from this repository path when the skill installer supports GitHub paths:
-
-```bash
-npx skills add https://github.com/viyuni/vidkit/tree/main/skills/vidkit
-```
-
-- If the installer expects an owner/repo plus path form, use:
-
-```bash
-npx skills add github:viyuni/vidkit/skills/vidkit
-```
-
-- Manual fallback: copy the whole `skills/vidkit` folder into the target project's `.codex/skills/` directory:
-
-```text
-target-project/
-  .codex/
-    skills/
-      vidkit/
-        SKILL.md
-        agents/
-          openai.yaml
-```
-
-- Invoke it explicitly as `$vidkit`, or let Codex trigger it when the project needs Vidkit CLI installation, TTS generation, batch audio rendering, or frame sheet previews.
-- Keep the folder name and frontmatter name as `vidkit`.
-- This skill explains how to install and use the npm package `@viyuni/vidkit`; it does not include the package itself.
-
 ## Default Approach
 
 - Treat Vidkit as a CLI-first tool. Do not assume a stable JavaScript import API unless the installed package exports one.
@@ -46,7 +16,6 @@ target-project/
   - `pnpm exec vidkit ...`
   - `npx vidkit ...`
   - `yarn vidkit ...`
-- Add package scripts for workflows the project will run often, such as `audio:tts` or `video:sheet`.
 
 ## TTS
 
@@ -76,6 +45,15 @@ vidkit tts "hello" --model minimax/speech-02-hd --voice male-qn-qingse -o hello.
   - `TTS_VOICE`: provider voice name
   - `TTS_API_KEY`: provider API key
   - `TTS_API_BASE_URL`: optional compatible API base URL
+- Load TTS variables from an env file when needed:
+
+```bash
+vidkit tts "hello" -o hello.mp3 --env-file .env
+vidkit tts --json ./script.json -o ./audios --env-file ./config/tts.env
+```
+
+- Treat `--env-file` as a `tts`-only option. Resolve relative paths from the current working directory.
+- Existing process environment variables take precedence over values loaded from the env file.
 - Never write real API keys into committed files. Use `.env.local`, CI secrets, or the host platform's secret store.
 
 ## Batch TTS From JSON

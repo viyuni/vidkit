@@ -49,6 +49,13 @@ TTS_API_KEY=sk-...
 TTS_API_BASE_URL=https://api.openai.com/v1
 ```
 
+Load the TTS variables from an environment file with the TTS-only `--env-file` option. Relative paths are resolved from the current working directory, and existing environment variables take precedence over values from the file.
+
+```bash
+pnpm exec vidkit tts "hello" -o hello.mp3 --env-file .env
+pnpm exec vidkit tts --json ./script.json -o ./audios --env-file ./config/tts.env
+```
+
 ## Batch TTS
 
 Render multiple audio files from JSON:
@@ -124,8 +131,6 @@ target-project/
     skills/
       vidkit/
         SKILL.md
-        agents/
-          openai.yaml
 ```
 
 Then ask Codex in the target project:

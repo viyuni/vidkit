@@ -1,13 +1,19 @@
 import { command } from 'cleye';
 import { resolve } from 'node:path';
+import { loadEnvFile } from '../env-file.ts';
 import { synthesizeSpeech, synthesizeSpeechFromJson } from './speech.ts';
-import { ttsEnv } from './env.ts';
+import { getTTSEnv } from './env.ts';
 
 export const ttsCommand = command(
   {
     name: 'tts',
     parameters: ['[text]'],
     flags: {
+      envFile: {
+        type: String,
+        placeholder: '<path>',
+        description: 'Load TTS environment variables from a file.',
+      },
       output: {
         type: String,
         alias: 'o',
@@ -61,6 +67,12 @@ export const ttsCommand = command(
   },
   async (argv) => {
     const { flags } = argv;
+
+    if (flags.envFile) {
+      loadEnvFile(resolve(flags.envFile));
+    }
+
+    const ttsEnv = getTTSEnv();
 
     const model = flags.model ?? ttsEnv.TTS_MODEL;
     const voice = flags.voice ?? ttsEnv.TTS_VOICE;

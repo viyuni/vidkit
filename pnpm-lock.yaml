@@ -33,6 +33,9 @@ importers:
       cleye:
         specifier: ^2.6.0
         version: 2.6.0
+      dotenv:
+        specifier: ^17.4.2
+        version: 17.4.2
     devDependencies:
       '@types/node':
         specifier: ^25.9.5
@@ -50,7 +53,7 @@ importers:
         specifier: 'catalog:'
         version: 0.2.3(@types/node@25.9.5)(jiti@2.7.0)(typescript@6.0.3)(vite@8.1.3(@types/node@25.9.5)(jiti@2.7.0)(yaml@2.9.0))(yaml@2.9.0)
       vitest:
-        specifier: npm:@voidzero-dev/vite-plus-test@^0.1.24
+        specifier: npm:@voidzero-dev/vite-plus-test@latest
         version: '@voidzero-dev/vite-plus-test@0.1.24(@types/node@25.9.5)(jiti@2.7.0)(typescript@6.0.3)(vite@8.1.3(@types/node@25.9.5)(jiti@2.7.0)(yaml@2.9.0))(yaml@2.9.0)'
 
 packages:
@@ -909,6 +912,10 @@ packages:
 
   dom-accessibility-api@0.5.16:
     resolution: {integrity: sha512-X7BJ2yElsnOJ30pZF4uIIDfBEVgF4XEBxL9Bxhy6dnrm5hkzqmsWHGTiHqRiITNhMyFLyAiWndIJP7Z1NTteDg==}
+
+  dotenv@17.4.2:
+    resolution: {integrity: sha512-nI4U3TottKAcAD9LLud4Cb7b2QztQMUEfHbvhTH09bqXTxnSie8WnjPALV/WMCrJZ6UV/qHJ6L03OqO3LcdYZw==}
+    engines: {node: '>=12'}
 
   es-module-lexer@1.7.0:
     resolution: {integrity: sha512-jEQoCwk8hyb2AZziIOLhDqpm5+2ww5uIE6lkO/6jcOCusfk6LhMHpXXfBLXTZ7Ydyt0j4VoUQv6uGNYbdW+kBA==}
@@ -1813,6 +1820,8 @@ snapshots:
   detect-libc@2.1.2: {}
 
   dom-accessibility-api@0.5.16: {}
+
+  dotenv@17.4.2: {}
 
   es-module-lexer@1.7.0: {}
 

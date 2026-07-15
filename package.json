@@ -13,10 +13,13 @@
     "url": "git+https://github.com/viyuni/vidkit.git"
   },
   "bin": {
-    "vidkit": "dist/cli.mjs"
+    "vidkit": "./dist/cli.mjs"
   },
   "files": [
-    "dist"
+    "dist",
+    "package.json",
+    "README.md",
+    "skills"
   ],
   "type": "module",
   "exports": {
@@ -40,7 +43,8 @@
     "ai": "^7.0.17",
     "arkenv": "^0.12.2",
     "arktype": "^2.2.3",
-    "cleye": "^2.6.0"
+    "cleye": "^2.6.0",
+    "dotenv": "^17.4.2"
   },
   "devDependencies": {
     "@types/node": "^25.9.5",
