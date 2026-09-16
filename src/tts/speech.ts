@@ -20,12 +20,14 @@ export type TTSJsonItem =
       name?: string;
       display?: string;
       tts: string;
+      instructions?: string;
     };
 
 export interface TTSJsonJob {
   name: string;
   text: string;
   display?: string;
+  instructions?: string;
 }
 
 export interface SynthesizeSpeechFromJsonOptions extends Omit<
@@ -60,15 +62,15 @@ function sanitizeFileName(value: string) {
     .slice(0, 80);
 }
 
-function ensureAudioExt(value: string) {
-  return extname(value) ? value : `${value}.mp3`;
+function ensureAudioExt(value: string, extension: string) {
+  return extname(value) ? value : `${value}.${extension}`;
 }
 
-function createIndexedName(index: number) {
-  return `speech-${String(index + 1).padStart(3, '0')}.mp3`;
+function createIndexedName(index: number, extension: string) {
+  return `speech-${String(index + 1).padStart(3, '0')}.${extension}`;
 }
 
-export function parseTTSJsonInput(value: unknown): TTSJsonJob[] {
+export function parseTTSJsonInput(value: unknown, defaultExtension = 'mp3'): TTSJsonJob[] {
   if (!Array.isArray(value)) {
     throw new Error('TTS JSON must be an array.');
   }
@@ -82,7 +84,7 @@ export function parseTTSJsonInput(value: unknown): TTSJsonJob[] {
       }
 
       return {
-        name: createIndexedName(index),
+        name: createIndexedName(index, defaultExtension),
         text,
       };
     }
@@ -92,6 +94,7 @@ export function parseTTSJsonInput(value: unknown): TTSJsonJob[] {
         name?: unknown;
         display?: unknown;
         tts?: unknown;
+        instructions?: unknown;
       };
 
       if (typeof objectItem.tts !== 'string' || !objectItem.tts.trim()) {
@@ -108,12 +111,20 @@ export function parseTTSJsonInput(value: unknown): TTSJsonJob[] {
           ? objectItem.display.trim()
           : undefined;
 
+      const instructions =
+        typeof objectItem.instructions === 'string' && objectItem.instructions.trim()
+          ? objectItem.instructions.trim()
+          : undefined;
+
       const rawName = name ?? display;
 
       return {
-        name: rawName ? ensureAudioExt(sanitizeFileName(rawName)) : createIndexedName(index),
+        name: rawName
+          ? ensureAudioExt(sanitizeFileName(rawName), defaultExtension)
+          : createIndexedName(index, defaultExtension),
         text: objectItem.tts.trim(),
         display,
+        instructions,
       };
     }
 
@@ -121,12 +132,12 @@ export function parseTTSJsonInput(value: unknown): TTSJsonJob[] {
   });
 }
 
-export async function readTTSJsonJobs(jsonPath: string) {
+export async function readTTSJsonJobs(jsonPath: string, defaultExtension = 'mp3') {
   const outputPath = resolve(jsonPath);
   const content = await readFile(outputPath, 'utf8');
 
   try {
-    return parseTTSJsonInput(JSON.parse(content));
+    return parseTTSJsonInput(JSON.parse(content), defaultExtension);
   } catch (error) {
     if (error instanceof SyntaxError) {
       throw new Error(`Invalid TTS JSON file: ${outputPath}`);
@@ -140,8 +151,9 @@ export async function synthesizeSpeechFromJson(
   options: SynthesizeSpeechFromJsonOptions,
 ): Promise<SynthesizeSpeechFromJsonResult> {
   const { jsonPath, outputDir, ...speechOptions } = options;
+  const defaultExtension = speechOptions.provider === 'xiaomi' ? 'wav' : 'mp3';
 
-  const jobs = await readTTSJsonJobs(jsonPath);
+  const jobs = await readTTSJsonJobs(jsonPath, defaultExtension);
   const resolvedOutputDir = resolve(outputDir);
   const outputs: string[] = [];
 
@@ -156,6 +168,7 @@ export async function synthesizeSpeechFromJson(
       ...speechOptions,
       text: job.text,
       outputPath,
+      instructions: job.instructions ?? speechOptions.instructions,
     });
 
     outputs.push(outputPath);

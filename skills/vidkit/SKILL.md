@@ -30,6 +30,13 @@ vidkit tts "hello" -o hello.mp3
 ```bash
 vidkit tts "hello" --provider openai --model tts-1 --voice alloy -o hello.mp3
 vidkit tts "hello" --provider minimax --model speech-02-hd --voice male-qn-qingse -o hello.mp3
+vidkit tts "你好" --provider xiaomi --model mimo-v2.5-tts --voice 冰糖 -o hello.wav
+```
+
+- Xiaomi MiMo supports natural-language speech instructions:
+
+```bash
+vidkit tts "老板，我跟你说个好消息！" --provider xiaomi --model mimo-v2.5-tts --voice 冰糖 --instructions "非常开心，语速稍快" -o hello.wav
 ```
 
 - The `--model provider/model` shorthand is also supported:
@@ -39,10 +46,11 @@ vidkit tts "hello" --model openai/tts-1 --voice alloy -o hello.mp3
 vidkit tts "hello" --model minimax/speech-02-hd --voice male-qn-qingse -o hello.mp3
 ```
 
-- Prefer environment variables for credentials:
-  - `TTS_PROVIDER`: `openai` or `minimax`
+- Prefer environment variables for credentials and defaults:
+  - `TTS_PROVIDER`: `openai`, `minimax`, or `xiaomi`
   - `TTS_MODEL`: provider model name, optionally `provider/model`
   - `TTS_VOICE`: provider voice name
+  - `TTS_INSTRUCTIONS`: default natural-language speech instructions
   - `TTS_API_KEY`: provider API key
   - `TTS_API_BASE_URL`: optional compatible API base URL
 - Load TTS variables from an env file when needed:
@@ -70,15 +78,17 @@ vidkit tts --json ./script.json -o ./audios
 [
   "First narration line.",
   {
-    "name": "intro.mp3",
+    "name": "intro.wav",
     "display": "Intro",
-    "tts": "Second narration line."
+    "tts": "Second narration line.",
+    "instructions": "Warm, calm narration."
   }
 ]
 ```
 
 - If an item is a string, Vidkit names it `speech-001.mp3`, `speech-002.mp3`, and so on.
 - If an item is an object, `tts` is required. `name` controls the output file name; without `name`, Vidkit uses `display` when present.
+- Object-level `instructions` override the global `--instructions` / `TTS_INSTRUCTIONS` value. Items without `instructions` inherit the global value.
 
 ## Frame Sheets
 

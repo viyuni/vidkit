@@ -22,7 +22,7 @@ export const ttsCommand = command(
       provider: {
         type: String,
         description:
-          'TTS provider. Supported: openai, minimax. Can also be configured by environment variable.',
+          'TTS provider. Supported: openai, minimax, xiaomi. Can also be configured by environment variable.',
       },
       model: {
         type: String,
@@ -31,6 +31,11 @@ export const ttsCommand = command(
       voice: {
         type: String,
         description: 'TTS voice. Can also be configured by environment variable.',
+      },
+      instructions: {
+        type: String,
+        description:
+          'Natural language instructions for speech style, emotion, tone, pacing, etc. Can also be configured by environment variable.',
       },
       apiKey: {
         type: String,
@@ -43,7 +48,7 @@ export const ttsCommand = command(
       json: {
         type: String,
         description:
-          'Split render TTS from JSON file. Supports string[] or { name?: string; display?: string; tts: string }[].',
+          'Split render TTS from JSON file. Supports string[] or { name?: string; display?: string; tts: string; instructions?: string }[].',
       },
     },
     help: {
@@ -52,6 +57,7 @@ export const ttsCommand = command(
         'vidkit tts "hello" -o hello.mp3',
         'vidkit tts "hello" --provider openai --model tts-1 --voice alloy -o hello.mp3',
         'vidkit tts "hello" --provider minimax --model speech-02-hd --voice male-qn-qingse -o hello.mp3',
+        'vidkit tts "你好" --provider xiaomi --model mimo-v2.5-tts --voice 冰糖 --instructions "开心、轻快" -o hello.wav',
         'vidkit tts "hello" --model openai/tts-1 --voice alloy -o hello.mp3',
         'vidkit tts "hello" --model minimax/speech-02-hd --voice male-qn-qingse -o hello.mp3',
         'vidkit tts "hello" --api-key sk-xxx --api-base-url https://api.openai.com/v1',
@@ -60,6 +66,7 @@ export const ttsCommand = command(
         'vidkit tts --json ./script.json -o ./audios',
         'vidkit tts --json ./script.json --provider openai --model tts-1 --voice alloy -o ./audios',
         'vidkit tts --json ./script.json --provider minimax --model speech-02-hd --voice male-qn-qingse -o ./audios',
+        'vidkit tts --json ./script.json --provider xiaomi --model mimo-v2.5-tts --voice 冰糖 --instructions "自然旁白" -o ./audios',
         'vidkit tts --json ./script.json --model openai/tts-1 --voice alloy -o ./audios',
         'vidkit tts --json ./script.json --model minimax/speech-02-hd --voice male-qn-qingse -o ./audios',
       ],
@@ -76,10 +83,12 @@ export const ttsCommand = command(
 
     const model = flags.model ?? ttsEnv.TTS_MODEL;
     const voice = flags.voice ?? ttsEnv.TTS_VOICE;
+    const instructions = flags.instructions ?? ttsEnv.TTS_INSTRUCTIONS;
     const apiKey = flags.apiKey ?? ttsEnv.TTS_API_KEY;
     const apiBaseUrl = flags.apiBaseUrl ?? ttsEnv.TTS_API_BASE_URL;
     const provider = flags.provider ?? ttsEnv.TTS_PROVIDER;
-    const outputPath = resolve(flags.output ?? 'speech.mp3');
+    const defaultOutput = provider === 'xiaomi' ? 'speech.wav' : 'speech.mp3';
+    const outputPath = resolve(flags.output ?? defaultOutput);
 
     if (!model) {
       throw new Error('TTS model is required. Pass "--model" or set TTS_MODEL.');
@@ -94,6 +103,7 @@ export const ttsCommand = command(
         provider,
         model,
         voice,
+        instructions,
         apiKey,
         apiBaseUrl,
       });
@@ -114,6 +124,7 @@ export const ttsCommand = command(
       provider,
       model,
       voice,
+      instructions,
       apiKey,
       apiBaseUrl,
     });

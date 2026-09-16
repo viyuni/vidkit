@@ -4,6 +4,8 @@ export interface TTSAdapterOptions {
   model: string;
   text: string;
   voice?: string;
+  instructions?: string;
+  language?: string;
 
   outputFormat?: 'hex' | 'url';
   audioFormat?: 'mp3' | 'wav' | 'flac';

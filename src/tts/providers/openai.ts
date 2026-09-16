@@ -12,6 +12,8 @@ export async function synthesizeOpenAISpeech(options: TTSAdapterOptions): Promis
     model: openai.speech(options.model),
     text: options.text,
     voice: options.voice,
+    instructions: options.instructions,
+    language: options.language,
   });
 
   return result.audio.uint8Array;

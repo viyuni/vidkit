@@ -1,9 +1,11 @@
-import { synthesizeOpenAISpeech } from './openai.ts';
 import { synthesizeMiniMaxSpeech } from './minimax.ts';
+import { synthesizeOpenAISpeech } from './openai.ts';
+import { synthesizeXiaomiSpeech } from './xiaomi.ts';
 
 export const ttsProviders = {
   openai: synthesizeOpenAISpeech,
   minimax: synthesizeMiniMaxSpeech,
+  xiaomi: synthesizeXiaomiSpeech,
 } as const;
 
 export type TTSProvider = keyof typeof ttsProviders;
