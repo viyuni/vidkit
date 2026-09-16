@@ -42,4 +42,4 @@ jobs:
           gh release create "$TAG" \
             --verify-tag \
             --title "$TAG" \
-            --generate-notes
+            --notes "For details, please refer to [CHANGELOG.md](https://github.com/${GH_REPO}/blob/main/CHANGELOG.md)."
