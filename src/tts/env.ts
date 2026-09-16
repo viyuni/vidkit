@@ -9,6 +9,7 @@ export function getTTSEnv() {
       TTS_API_KEY: 'string?',
       TTS_MODEL: 'string?',
       TTS_VOICE: 'string?',
+      TTS_INSTRUCTIONS: 'string?',
       TTS_PROVIDER: type.enumerated(...TTSProviders).optional(),
     },
     {

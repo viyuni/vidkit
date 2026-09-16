@@ -20,12 +20,14 @@ export type TTSJsonItem =
       name?: string;
       display?: string;
       tts: string;
+      instructions?: string;
     };
 
 export interface TTSJsonJob {
   name: string;
   text: string;
   display?: string;
+  instructions?: string;
 }
 
 export interface SynthesizeSpeechFromJsonOptions extends Omit<
@@ -92,6 +94,7 @@ export function parseTTSJsonInput(value: unknown): TTSJsonJob[] {
         name?: unknown;
         display?: unknown;
         tts?: unknown;
+        instructions?: unknown;
       };
 
       if (typeof objectItem.tts !== 'string' || !objectItem.tts.trim()) {
@@ -108,12 +111,18 @@ export function parseTTSJsonInput(value: unknown): TTSJsonJob[] {
           ? objectItem.display.trim()
           : undefined;
 
+      const instructions =
+        typeof objectItem.instructions === 'string' && objectItem.instructions.trim()
+          ? objectItem.instructions.trim()
+          : undefined;
+
       const rawName = name ?? display;
 
       return {
         name: rawName ? ensureAudioExt(sanitizeFileName(rawName)) : createIndexedName(index),
         text: objectItem.tts.trim(),
         display,
+        instructions,
       };
     }
 
@@ -156,6 +165,7 @@ export async function synthesizeSpeechFromJson(
       ...speechOptions,
       text: job.text,
       outputPath,
+      instructions: job.instructions ?? speechOptions.instructions,
     });
 
     outputs.push(outputPath);

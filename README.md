@@ -30,6 +30,18 @@ Choose a provider, model, and voice:
 ```bash
 pnpm exec vidkit tts "hello" --provider openai --model tts-1 --voice alloy -o hello.mp3
 pnpm exec vidkit tts "hello" --provider minimax --model speech-02-hd --voice male-qn-qingse -o hello.mp3
+pnpm exec vidkit tts "你好" --provider xiaomi --model mimo-v2.5-tts --voice 冰糖 -o hello.wav
+```
+
+Xiaomi MiMo TTS supports natural-language speech instructions. The target speech text is sent as the assistant message and `--instructions` is sent as the optional user message:
+
+```bash
+pnpm exec vidkit tts "老板，我跟你说个好消息！" \
+  --provider xiaomi \
+  --model mimo-v2.5-tts \
+  --voice 冰糖 \
+  --instructions "非常开心，语速稍快，带一点得意" \
+  -o hello.wav
 ```
 
 You can also use the `provider/model` shorthand:
@@ -42,11 +54,12 @@ pnpm exec vidkit tts "hello" --model minimax/speech-02-hd --voice male-qn-qingse
 Configuration can come from flags or environment variables:
 
 ```bash
-TTS_PROVIDER=openai
-TTS_MODEL=tts-1
-TTS_VOICE=alloy
-TTS_API_KEY=sk-...
-TTS_API_BASE_URL=https://api.openai.com/v1
+TTS_PROVIDER=xiaomi
+TTS_MODEL=mimo-v2.5-tts
+TTS_VOICE=冰糖
+TTS_INSTRUCTIONS=自然、清晰的旁白
+TTS_API_KEY=...
+TTS_API_BASE_URL=https://api.xiaomimimo.com/v1
 ```
 
 Load the TTS variables from an environment file with the TTS-only `--env-file` option. Relative paths are resolved from the current working directory, and existing environment variables take precedence over values from the file.
@@ -70,14 +83,40 @@ Supported JSON input:
 [
   "First narration line.",
   {
-    "name": "intro.mp3",
+    "name": "intro.wav",
     "display": "Intro",
-    "tts": "Second narration line."
+    "tts": "Second narration line.",
+    "instructions": "Warm, calm narration with a slightly slower pace."
   }
 ]
 ```
 
-String items are written as `speech-001.mp3`, `speech-002.mp3`, and so on. Object items require `tts`; `name` controls the output file name.
+String items are written as `speech-001.mp3`, `speech-002.mp3`, and so on. Object items require `tts`; `name` controls the output file name. An object's `instructions` overrides the global `--instructions` / `TTS_INSTRUCTIONS` value for that item. Items without `instructions` inherit the global value.
+
+For example, use one default style with per-line overrides:
+
+```bash
+pnpm exec vidkit tts --json ./script.json \
+  --provider xiaomi \
+  --model mimo-v2.5-tts \
+  --voice 冰糖 \
+  --instructions "自然、清晰的女性旁白" \
+  -o ./audios
+```
+
+```json
+[
+  {
+    "name": "intro.wav",
+    "tts": "欢迎来到今天的视频。"
+  },
+  {
+    "name": "surprised.wav",
+    "tts": "等等！你刚才说什么？",
+    "instructions": "突然惊讶，提高音量，语速稍快"
+  }
+]
+```
 
 ## Frame Sheets
 
