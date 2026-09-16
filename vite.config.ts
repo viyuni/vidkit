@@ -5,6 +5,7 @@ export default defineConfig({
     '*': 'vp check --fix',
   },
   pack: {
+    deps: { resolveDepSubpath: true },
     entry: {
       index: 'src/index.ts',
       cli: 'src/cli.ts',

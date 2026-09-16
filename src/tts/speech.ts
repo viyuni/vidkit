@@ -55,11 +55,14 @@ export async function synthesizeSpeech(options: SynthesizeSpeechOptions) {
 }
 
 function sanitizeFileName(value: string) {
-  return value
-    .trim()
-    .replace(/[<>:"/\\|?*\x00-\x1F]/g, '-')
-    .replace(/\s+/g, ' ')
-    .slice(0, 80);
+  return (
+    value
+      .trim()
+      // oxlint-disable-next-line no-control-regex
+      .replace(/[<>:"/\\|?*\x00-\x1F]/g, '-')
+      .replace(/\s+/g, ' ')
+      .slice(0, 80)
+  );
 }
 
 function ensureAudioExt(value: string, extension: string) {

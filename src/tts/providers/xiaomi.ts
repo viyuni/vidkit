@@ -41,9 +41,7 @@ export function createXiaomiTTSRequest(options: TTSAdapterOptions) {
 
 export async function synthesizeXiaomiSpeech(options: TTSAdapterOptions): Promise<Uint8Array> {
   if (!options.apiKey) {
-    throw new Error(
-      'Xiaomi MiMo TTS API key is required. Pass "--api-key" or set TTS_API_KEY.',
-    );
+    throw new Error('Xiaomi MiMo TTS API key is required. Pass "--api-key" or set TTS_API_KEY.');
   }
 
   const baseUrl = options.apiBaseUrl ?? 'https://api.xiaomimimo.com/v1';
