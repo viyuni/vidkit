@@ -87,7 +87,8 @@ export const ttsCommand = command(
     const apiKey = flags.apiKey ?? ttsEnv.TTS_API_KEY;
     const apiBaseUrl = flags.apiBaseUrl ?? ttsEnv.TTS_API_BASE_URL;
     const provider = flags.provider ?? ttsEnv.TTS_PROVIDER;
-    const outputPath = resolve(flags.output ?? 'speech.mp3');
+    const defaultOutput = provider === 'xiaomi' ? 'speech.wav' : 'speech.mp3';
+    const outputPath = resolve(flags.output ?? defaultOutput);
 
     if (!model) {
       throw new Error('TTS model is required. Pass "--model" or set TTS_MODEL.');

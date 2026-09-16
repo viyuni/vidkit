@@ -44,6 +44,8 @@ pnpm exec vidkit tts "老板，我跟你说个好消息！" \
   -o hello.wav
 ```
 
+`instructions` is a common TTS option. Providers that support it can consume the same value; Xiaomi maps it to the optional `user` message required by the MiMo speech-synthesis protocol.
+
 You can also use the `provider/model` shorthand:
 
 ```bash
@@ -91,7 +93,7 @@ Supported JSON input:
 ]
 ```
 
-String items are written as `speech-001.mp3`, `speech-002.mp3`, and so on. Object items require `tts`; `name` controls the output file name. An object's `instructions` overrides the global `--instructions` / `TTS_INSTRUCTIONS` value for that item. Items without `instructions` inherit the global value.
+Object items require `tts`; `name` controls the output file name. An object's `instructions` overrides the global `--instructions` / `TTS_INSTRUCTIONS` value for that item. Items without `instructions` inherit the global value. Auto-generated names keep the existing `.mp3` default for OpenAI/MiniMax and use `.wav` for Xiaomi MiMo.
 
 For example, use one default style with per-line overrides:
 

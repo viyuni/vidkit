@@ -33,7 +33,7 @@ export function createXiaomiTTSRequest(options: TTSAdapterOptions) {
     messages,
     audio: {
       format: 'wav' as const,
-      voice: options.voice ?? 'mimo_default',
+      ...(options.voice ? { voice: options.voice } : {}),
     },
     stream: false,
   };

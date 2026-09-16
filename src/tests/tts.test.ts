@@ -32,18 +32,17 @@ describe('Xiaomi MiMo TTS', () => {
     });
   });
 
-  it('omits the optional user message when instructions are not provided', () => {
+  it('omits optional instructions and voice when they are not provided', () => {
     expect(
       createXiaomiTTSRequest({
-        model: 'mimo-v2.5-tts',
+        model: 'mimo-v2.5-tts-voicedesign',
         text: '你好。',
       }),
     ).toEqual({
-      model: 'mimo-v2.5-tts',
+      model: 'mimo-v2.5-tts-voicedesign',
       messages: [{ role: 'assistant', content: '你好。' }],
       audio: {
         format: 'wav',
-        voice: 'mimo_default',
       },
       stream: false,
     });
@@ -72,6 +71,15 @@ describe('Batch TTS', () => {
         text: '好消息！',
         display: 'Happy',
         instructions: '开心、轻快。',
+      },
+    ]);
+  });
+
+  it('uses provider-specific default extensions', () => {
+    expect(parseTTSJsonInput(['你好。'], 'wav')).toEqual([
+      {
+        name: 'speech-001.wav',
+        text: '你好。',
       },
     ]);
   });
